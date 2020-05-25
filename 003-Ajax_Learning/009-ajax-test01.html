@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        div{
+            width: 300px;
+            height: 300px;
+            border: 1px solid #000;
+            margin: 50px auto;
+            text-align: center;
+            background: #bfa;
+        }
+        img{
+            display: block;
+            width: 200px;
+            height: 200px; 
+            margin: 10px auto 10px;
+            border: 1px solid #000;
+        }
+        p{
+            text-align: center;
+            background: pink;
+        }
+        button{
+        	width: 50px;
+        	height: 25px;
+        	margin-top: 5px;
+        }
+    </style>
+    <script src="ajax-get-post.js"></script>
+    <script type="text/javascript">
+    	window.onload = function (){
+    		const oTitle = document.getElementById('title');
+			const oImg = document.querySelector('img');
+			const oDes = document.getElementById('des');
+
+			const btns = document.querySelectorAll('button');
+
+			for (let i = 0; i < btns.length; i++) {
+				btns[i].onclick = function (){
+					const name = this.getAttribute("name");
+					
+					ajax({
+					type:"get",
+					url:"009-ajax-test01.php",
+					data:{name:name},
+					timeout:3000,
+					success: function (xmlhttp){
+	                    let res = xmlhttp.responseXML;
+
+	                    let title = res.querySelector(name+">title").innerHTML;
+	                    let des = res.querySelector(name+">des").innerHTML;
+	                    let src = res.querySelector(name+">src").innerHTML;
+
+	                    oTitle.innerHTML = title;
+	                    oDes.innerHTML = des;
+	                    oImg.setAttribute("src", src);
+					}, 
+					error: function (xmlhttp){
+						console.log(xmlhttp.status+", 没有接收到服务器返回的数据");
+					}
+					});
+
+				}
+			}
+			
+
+
+
+		}
+
+    </script>
+</head>
+
+<body>
+	<div>
+	    <p id="title">名称</p>
+	    <img src="" alt="">
+	    <p id="des">描述信息</p>
+	    <button name="LB">李白</button>
+	    <button name="DF">杜甫</button>
+	    <button name="BJY">白居易</button>
+	</div>
+
+</body>
+</html>

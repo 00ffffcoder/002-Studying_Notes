@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>008-ajax-xml</title>
+	<style type="text/css">
+		.box1{
+			height: 200px;
+			width: 400px;
+			margin:20px auto;
+			background-color: #bfa;
+			text-align: center;
+			position: relative;
+		}
+		.box1 button{
+			height: 40px;
+			width: 150px;
+			background-color: yellow;
+			outline: none;
+			/*设置水平和垂直居中*/
+			position: absolute;
+			top:50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+
+		}
+		.box1 button:hover{
+			background-color: #fb7299;
+			color: white;
+		}
+	</style>
+
+	<script src="ajax-get-post.js"></script>
+
+	<script type="text/javascript">
+		window.onload = function (){
+			const btn = document.querySelector('button');
+			btn.onclick = function (){
+				
+				ajax({
+				type:"gett",
+				url:"008-ajax-xml.php",
+				timeout:3000, 
+				success: function (xmlhttp){
+					console.log(xmlhttp.responseXML);
+					const res = xmlhttp.responseXML;
+					console.log(res.querySelector('name').innerHTML);
+					console.log(res.querySelector('age').innerHTML);
+					console.log(res.querySelector('say').innerHTML);
+				}, 
+				error: function (xmlhttp){
+					console.log(xmlhttp.status+", 没有接收到服务器返回的数据");
+				}
+				});
+			}
+
+
+		}
+	</script>
+</head>
+<body>
+	<h2>1.XML</h2>
+    <p>XML 指可扩展标记语言（eXtensible Markup Language）。XML 被设计用来传输和存储数据。</p>
+
+    <ul>
+    	<li>（1）编写xml文件：首行固定格式</li>
+    	<li>（2）必须有根标签，所有内容放在根标签内；</li>
+    	<li>（3）标签名都可以自定义</li>
+    </ul>
+
+	<div class="box1">
+		<p>点击发送ajax异步get请求</p>
+		<button>点击发送ajax异步get请求</button>
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>

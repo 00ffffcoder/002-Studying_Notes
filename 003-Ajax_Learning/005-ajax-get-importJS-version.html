@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>005-ajax-get</title>
+	<style type="text/css">
+		.box1{
+			height: 200px;
+			width: 400px;
+			margin:20px auto;
+			background-color: #bfa;
+			text-align: center;
+			position: relative;
+		}
+		.box1 button{
+			height: 40px;
+			width: 150px;
+			background-color: yellow;
+			outline: none;
+			/*设置水平和垂直居中*/
+			position: absolute;
+			top:50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+
+		}
+		.box1 button:hover{
+			background-color: #fb7299;
+			color: white;
+		}
+	</style>
+
+	<script src="ajax-get-post.js"></script>
+
+	<script type="text/javascript">
+		window.onload = function (){
+			const btn = document.querySelector('button');
+			btn.onclick = function (){
+				ajax({
+				type:"get",
+				url:"004-ajax-get.php",
+				data: {
+					"userName":"Alan",
+					"userPwd":"123456"
+				},
+				timeout:3000, 
+				success: function (xmlhttp){
+					console.log(xmlhttp.responseText);
+				}, 
+				error: function (xmlhttp){
+					console.log(xmlhttp.status+", 没有接收到服务器返回的数据");
+				}
+				});
+			}
+		}
+	</script>
+
+</head>
+<body>
+	<h2>1.什么是Ajax?</h2>
+    <p>AJAX 是与服务器交换数据并更新部分网页的艺术，在不重新加载整个页面的情况下。</p>
+
+    <h2>2.GET请求</h2>
+	<div class="box1">
+		<p>点击发送ajax异步GET请求</p>
+		<button>点击发送ajax异步GET请求</button>
+	</div>
+
+
+
+
+
+
+
+</body>
+</html>
