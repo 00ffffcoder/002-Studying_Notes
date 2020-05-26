@@ -232,7 +232,7 @@ a.instanceMethod(); //调用实例方法
 
 - #id选择器 ： 根据给定的ID**匹配一个元素**。
 
-- 如果选择器中包含特殊字符，可以用两个斜杠转义。
+- 如果选择器中包含特殊字符，可以用**两个斜杠**转义。
 
 ```
 <span id="foo:bar"></span>
@@ -347,4 +347,365 @@ $('#myForm :input') // 选择id为myForm的表单中的input元素
 - ==$("DOMelement"). removeProp(name)==
 
   - 用来删除由`.prop()`方法设置的属性集
+
+- **jQuery CSS类操作相关方法**
+
+  - 给元素添加类： ==**$('div').addClass(class1  class2 );**==
+
+  - 给元素删除类：==**$('div').removeClass(class1  class2  );**==
+  - 切换类，存在类就删除它，不存在就添加：==**$('div').toggleClass(class1  class2 );**==
+
+- **添加和获取 HTML代码/文本/值**
+
+  - **html(val|fn)**：取得第一个匹配元素的html内容，包括标签。跟原生JS的innerHTML一样！
+
+    ```
+    $("p").html("Hello <b>world</b>!"); //设置
+    console.log($("p").html()); //获取
+    ```
+
+  - **text(val|fn)**：取得所有匹配元素的文本内容。跟原生JS的innerText一样！
+
+    ```
+    $("p").text("Hello world!"); //设置
+    console.log($("p").text()); //获取
+    ```
+
+  - **val(val|fn)**：获得匹配元素的当前值。
+
+    ```
+    $("input").val("hello world!");//设置文本框的值
+    console.log($("input").val()); //获取文本框的值
+    ```
+
+    如果多选，将返回一个数组，其包含所选的值。
+
+### $10. jQuery 中CSS相关方法
+
+- 设置css样式：
+
+  - 逐个设置：
+
+  ```
+  $("div").css("width","100px");
+  $("div").css("height","200px");
+  $("div").css("color","red");
+  ```
+
+  - 链式设置：大于三步，建议分开
+
+  ```
+  $("div").css("width","100px").css("height","200px").css("color","red");
+  ```
+
+  - **批量设置：推荐**
+
+    ```
+    $("div").css({
+    	"width":"100px",
+    	"height":"200px",
+    	"color":"red"
+    });
+    ```
+
+  - 获取CSS样式值
+
+    ```
+    console.log($("div").css("width"));
+    ```
+
+- 设置尺寸：
+
+  - **width([val|fn])**：设定CSS中 'width' 的值，可以是字符串或者数字，还可以是一个函数，返回要设置的数值。
+
+    ```
+    $("div").width(20);  //设置
+    $("div").width(); //返回的是width数值。
+    ```
+
+  - **height([val|fn])**
+
+  - **innerHeight()**
+
+  - **innerWidth()**：获取第一个匹配元素内部区域宽度（包括补白、不包括边框）。
+
+  - **outerHeight([soptions])**
+
+  - **outerWidth([options])**：获取第一个匹配元素外部宽度（默认包括补白和边框）。option设置为 true 时，计算边距在内。
+
+- 设置位置
+
+  - **offset([coordinates])**：设置/获取 元素距离**窗口**的偏移距离
+
+    ```
+    $("div").offset({left:50,top:50});  //设置
+    $("div").offset().left    //获取
+    ```
+
+  - **position()**：只能获取 元素距离**最近定位元素**的偏移距离
+
+    ```
+    $("div").position().left    //获取
+    $("div").css({left:"10px"});  //用css来设置
+    ```
+
+  - **scrollTop([val])**：获取/设置 滚动条的偏移位
+
+    ```
+    $("div").scrollTop()    //获取
+    $("div").scrollTop(300);  //设置
+    ```
+
+    对于获取/设置  网页的滚动条偏移位，要考虑兼容ie
+
+    ```
+    console.log($("body").scrollTop()+$("html").scrollTop());  //获取
+    $("html,body").scrollTop(300);  //设置
+    ```
+
+  - **scrollLeft([val])**
+
+    
+
+### $11. jQuery 中事件相关方法
+
+#### 1.jQuery 中两种绑定事件的方式：
+
+##### （1）.eventName(fn)
+
+​	特点：编码效率略高；部分事件jQuery没有实现，不能添加；添加多个相同或不同类型事件，不会覆盖
+
+```
+$('button').click(function (){ //鼠标点击元素时会发生 
+	alert("button click 1");
+})
+$('button').mousedown(function (){//仅需鼠标按下，而不需要松开即可发生。
+	alert("button mousedown");
+})
+$('button').mouseenter(function (){ //鼠标指针穿过元素时会发生 
+	alert("button mouseenter");
+})
+$('button').mouseleave(function (){ //鼠标指针离开元素时会发生 
+	alert("button mouseleave");
+})
+```
+
+##### （2）.on(eventName, fn)
+
+​	特点：编码效率略低；但所有JS事件都可以实现；添加多个相同或不同类型事件，不会覆盖
+
+```
+$("p").on("click", function(){
+	alert( $(this).text() );
+});
+```
+
+#### 2.jQuery 中解绑事件的方式：**.off( )**
+
+```
+function test1(){
+	alert("button click 1");
+}
+function test2(){
+	alert("button click 2");
+}
+
+$('button').click(test1);
+$('button').click(test2);
+```
+
+（1）不带参数：移除该元素所有事件；`$('button').off(); `
+
+（2）带1个参数：移除该元素指定类型事件；`$('button').off("click"); `
+
+（3）带2个参数：移除该元素指定类型的指定事件；`$('button').off("click",test1); `
+
+#### 3.jQuery 中事件冒泡和默认行为：
+
+（1）事件冒泡：触发子元素事件，父元素、父父元素等的相同类型事件也触发；
+
+```
+$('.son').click(function (){
+	alert("son");
+})
+$('.father').click(function (){
+	alert("father");
+})
+```
+
+（2）取消事件冒泡方法：**子元素内设置：**
+
+```
+//方法1
+$('.son').click(function (){
+	alert("son");
+	return false; 
+})
+//方法2
+$('.son').click(function (event){
+	alert("son");
+	event.stopPropagation(); 
+})
+```
+
+（3）默认行为：<a>标签和<form>表单提交，都会产生自动跳转，这些都是默认行为
+
+阻止默认行为：
+
+```
+//方法1
+$('a').click(function (){
+	alert("a");
+	return false; 
+})
+//方法2
+$('a').click(function (event){
+	alert("a");
+	event.preventDefault(); 
+})
+```
+
+#### 4.jQuery 中事件自动触发：
+
+##### （1）.trigger(type,[data])
+
+```
+$('.son').click(function (){
+	alert("son");
+})
+$('.son').trigger("click"); //不用点击，自动触发事件，有冒泡，也自动触发
+
+//<a href="http://i.co"><span>注册</span></a>
+$("span']").click(function (){
+	alert("span");
+})
+$("span").trigger("click"); //自动a标签默认行为，注意没有span标签则不会自动触发
+
+$("input[type='submit']").click(function (){
+	alert("submit");
+})
+$("input[type='submit']").trigger("click"); //自动触发事件，会跳转页面，即默认行为也触发
+```
+
+==特点： 会触发事件冒泡；会触发超链接、表单默认行为==
+
+##### （2）.triggerHandler(type, [data])
+
+==特点：不会触发事件冒泡；不会触发超链接、表单默认行为==
+
+##### （3）trigger另外用处：自定义事件
+
+自定义事件必须用 on  来绑定 ， 用  trigger 来触发
+
+```
+$('.son').on("myClick",function (){
+	alert("son");
+})
+$('.son').trigger("myClick"); 
+```
+
+##### （4）trigger另外用处：事件命名空间
+
+多人协同开发项目，可能给一个元素绑定了重复事件，为了区分，才有了事件命名空间:
+
+必须用 on  来绑定 ， 用  trigger 来触发
+
+```
+$('.son').on("click.zhanshan",function (){
+	alert("1");
+})
+$('.son').on("click.lisi",function (){
+	alert("2");
+})
+$('.father').on("click.zhanshan",function (){
+	alert("3");
+})
+$('.father').on("click.lisi",function (){
+	alert("4");
+})
+$('.son').trigger("click.lisi"); //结果 ： 2  4
+$('.son').trigger("click"); //结果 ： 1  2  3  4
+```
+
+
+
+#### 5.jQuery 中事件委托：
+
+==事件委托：对于动态显示的元素（新增的/触发事件才出来的）无法一开始就对其监听，只能委托其父级/祖父级元素完成事件绑定。用到了  **.delegate( )**  方法==
+
+jQuery中，如果通过核心函数找到的元素不止一个，添加事件时，所有该元素都会被添加一个事件。
+
+```
+// 点击按钮，新增一个li
+$("button").click(function (){
+	$("ul").append("<li>我是新增的li</li>");
+})
+// 所有原生的li绑定事件，触发点击就打印内容
+$("ul>li").click(function (){
+	console.log($(this).html());
+})
+```
+
+注意：上述代码，对于新增的<li>，并不会有点击事件
+
+要想新增的和原来的<li>都绑定点击事件，则需要**事件委托**：在<ul>上绑定：
+
+```
+$("ul").delegate("li","click",function (){
+	console.log($(this).html());
+})
+```
+
+
+
+#### 5.jQuery 中鼠标移入/移出：
+
+- mouseover / mouseout  事件，从父元素移入/移出子元素 也会触发 父元素的事件。
+
+- mouseenter / mouseleave  事件，从父元素移入/移出子元素 **不会**触发 父元素的事件。**推荐使用这个**！
+
+- hover  事件：同时监听鼠标 移入/移出
+
+  ```
+  $(".father").hover({
+  	function (){console.log("移入")},
+  	function (){console.log("移出")}
+  })
+  ```
+
+  
+
+### $12. jQuery 中动画效果
+
+#### （1）基本效果： .show()    .hide()    .toggle()
+
+- 三者参数：
+  - **speed**:  三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+  - **fn**:  在动画完成时执行的函数，每个元素执行一次。
+- 动画显示；动画隐藏；切换显示（有就隐藏，没有就显示）
+
+```
+$("div").show(1000,function (){
+	alert("显示完毕!");
+})
+$("div").hide(1000,function (){
+	alert("隐藏完毕!");
+})
+$("div").toggle(1000,function (){
+	alert("切换完毕!");
+})
+```
+
+#### （2）滑动效果： .slideDown()   .slideUp()    .slideToggle()
+
+- 参数同上
+- 作用：向下滑动显示动画； 向上滑动隐藏动画； 滑动切换动画
+
+#### （4）注意：在jQuery中，触发一个事件就执行动画，为了避免拥堵，建议在执行动画前先调用  .stop() 方法，然后再执行动画。
+
+
+
+
+
+
 
