@@ -785,6 +785,133 @@ $("div").toggle(1000,function (){
 
 
 
+### $13. jQuery中文档处理
+
+#### （1）内部添加
+
+- **将子元素添加到父元素==尾部==：append(content|fn)      appendTo(content)**
+
+  两种方法效果一样，只是书写格式不一致
+
+  ```
+  var $li = "<li>新增的li</li>"
+  $("ul").append($li);
+  $li.appendTo("ul");
+  ```
+
+- **将子元素添加到父元素==头部==：prepend(content|fn)        prependTo(content)**
+
+  两种方法效果一样，只是书写格式不一致
+
+  ```
+  var $li = "<li>新增的li</li>"
+  $("ul").prepend($li);
+  $li.prependTo("ul");
+  ```
+
+#### （2）外部添加
+
+- **将元素添加到指定元素==后面==：after(content|fn)**       **insertAfter(content)**
+
+  两种方法效果一样，只是书写格式不一致
+
+  ```
+  var $li = "<li>新增的li</li>"
+  $("ul").after($li); //这个新增的会添加到<ul>的后面（紧跟ul）
+  $li.insertAfter("ul");
+  ```
+
+- **将元素添加到指定元素==前面==：before(content|fn)**     **insertBefore(content)**
+
+  两种方法效果一样，只是书写格式不一致
+
+  ```
+  var $li = "<li>新增的li</li>"
+  $("ul").before($li); //这个新增的会添加到<ul>的前面（紧跟ul）
+  $li.insertBefore("ul");
+  ```
+
+  
+
+#### （3）删除节点  
+
+- **empty()**  
+
+  无参数。删除指定元素的内容和子元素，但指定元素本身不会删除。
+
+  ```
+  $("div").empty();
+  ```
+
+- **remove([expr])**       **detach([expr])**
+
+  参数为筛选元素的表达式，可加可不加。删除所有匹配到的元素。
+
+  ```
+  $("div").remove();
+  $("div").remove(".box");
+  ```
+
+  **remove([expr])**方法不会把匹配的元素从jQuery对象中删除，因而可以在将来再使用这些匹配的元素。但除了这个元素本身得以保留之外，其他的比如绑定的事件，附加的数据等都会被移除。
+
+  **detach([expr])**方法不会把匹配的元素从jQuery对象中删除，因而可以在将来再使用这些匹配的元素。与remove()不同的是，所有绑定的事件、附加的数据等都会保留下来。
+
+
+
+#### （4）替换节点   replaceWith(content|fn)       replaceAll(selector)
+
+​	两种方法效果一样，都是替换指定元素。只是书写格式不一致
+
+```
+var $h5 = "<h5>我是标题5</h5>";
+$("h1").replaceWith($h5);  // 把原来的<h1>替换成<h5>
+$h5.replaceAll("h1");  // 把原来的<h1>替换成<h5>
+```
+
+
+
+#### （5）复制节点： .clone(布尔值参数)
+
+**.clone(false)**   浅复制，只复制元素，不会复制元素自身的事件；
+
+**.clone(true)**   深复制，同时复制元素和元素自身的事件；
+
+```
+// 浅复制第一个li，并添加到ul的末尾
+var $li = $("li:first").clone(false);
+$("ul").append($li);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
